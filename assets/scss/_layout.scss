@@ -219,6 +219,11 @@ hr {
   }
 }
 
+.utterances_container {
+  background-color: lighten($light-gray-color, 16%);
+  padding: $base-spacing 0;
+}
+
 .site-footer {
   @extend .clearfix;
 

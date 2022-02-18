@@ -1,12 +1,11 @@
 {% if site.comments_enabled and page.comments %}
-  <aside id="comments" class="disqus">
+<aside id="comments" class="utterances_container">
 
     <div class="container">
       <h3><i class="icon icon-comments-o"></i> Comments</h3>
-      <div id="disqus_thread"></div>
 
       <script src="https://utteranc.es/client.js"
-        repo="{{ site.url }}{{ site.baseurl }}"
+        repo="{{site.repo}}"
         issue-term="pathname"
         label="Comment"
         theme="github-light"
@@ -15,9 +14,9 @@
       </script>
 
       <noscript>
-        Please enable JavaScript to view the comment section.</a>
+        Please enable JavaScript to view the comments.</a>
       </noscript>
     </div>
 
-  </aside>
+</aside>
 {% endif %}
