@@ -3,7 +3,7 @@ layout: post
 title: "DIY QR Code reader"
 comments: true
 description: "Simple and crude DIY implementation of a QR code reader"
-keywords: "python, QR, decoder, computer vision"
+tags: "Python QR-code Computer-vision"
 ---
 
 # DIY QR Decoder in Python using basic computer vision (openCV)
