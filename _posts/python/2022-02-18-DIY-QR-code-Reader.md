@@ -4,7 +4,7 @@ title: "DIY QR Code reader"
 comments: true
 description: "Walkthrough in making a python code to read and decode a QR code"
 categories: Python
-tags: "Python QR-code Computer-vision"
+tags: "Python QR-code Computer-vision openCV"
 ---
 
 # DIY QR Decoder in Python using basic computer vision (openCV)
@@ -17,6 +17,7 @@ However, the goal here is to do a simple and crude implementation by ourself to 
 
 *Limitations*: 
 - Computer vision: Do not check nor correct the image orientation.
+    - **Check [HERE]({% post_url python/2022-02-19-Perspective-correction %}) how it can be done**
 - Decoding: The only implementation is QR Version 1 (21x21), byte-encoded 
 - Not dealing with error correction features
 
@@ -35,7 +36,6 @@ plt.rcParams["figure.figsize"] = (10,10)
 
 # open your QR image
 img = cv2.imread("samples/QR.png", cv2.IMREAD_COLOR) # open in grayscale
-#img = cv2.imread("samples/QR_cert.png", cv2.IMREAD_COLOR) # open in grayscale
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) #convert to gray
 
 plt.imshow(img)
@@ -248,6 +248,8 @@ The first thing to do is to read the QR format information, especially the mask 
 
 ![QR mask](/assets/images/posts/DIY_QR_code_reader/QR_mask.png)
 
+(Source: [Wikipedia](https://en.wikipedia.org/wiki/QR_code))
+
 Once the mask is known, we need to apply the mask on the grid and invert the masked cell.
 We also check the encoding, by reading the 2x2 bottom right corner. This implementation is decoding only the byte encoding.
 
@@ -357,6 +359,8 @@ assert np.array_equal(enc, np.array([[0, 0], [1, 0]]))
 Finally, we can read the data, block by block, following this format:
 
 ![QR placement](/assets/images/posts/DIY_QR_code_reader/QR_placement.png)
+
+(Source: [Wikipedia](https://en.wikipedia.org/wiki/QR_code))
 
 
 ```python
