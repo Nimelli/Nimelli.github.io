@@ -1,8 +1,8 @@
 # Site settings
-title_left    : "Think"
-title_right   : "space" # default: ""
-description   : "Minimalist Jekyll theme for technical writing blog."
-keywords      : "Jekyll, theme, free, download, SEO, blog, web, minimalist, thinkspace"
+title_left    : "Coffee"
+title_right   : "Tech" # default: ""
+description   : "Blog"
+keywords      : "coffeetech, tech, blog, science"
 repo          : "Nimelli/Nimelli.github.io"
 url           : https://Nimelli.github.io/ # site url
 baseurl       : "" # apply repo name like "/myproject" if used under gh-pages branch, else (under master branch) just leave empty/blank
@@ -14,7 +14,7 @@ comments_enabled  : true
 postshare_enabled : true
 
 # Build settings
-permalink   : /:year/:title/
+permalink   : /:categories/:year/:title:output_ext
 markdown    : kramdown
 highlighter : rouge
 

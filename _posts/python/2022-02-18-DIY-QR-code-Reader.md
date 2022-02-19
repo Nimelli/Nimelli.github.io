@@ -2,20 +2,28 @@
 layout: post
 title: "DIY QR Code reader"
 comments: true
-description: "Simple and crude DIY implementation of a QR code reader"
+description: "Walkthrough in making a python code to read and decode a QR code"
+categories: Python
 tags: "Python QR-code Computer-vision"
 ---
 
 # DIY QR Decoder in Python using basic computer vision (openCV)
+
+Walkthrough to code a Python script that can read QR code, and decode it.
+
 OpenCV actually has some built-in function to directly decode QR code (cf QRCodeDetector), that would be way more reliable than this implementation.
 
 However, the goal here is to do a simple and crude implementation by ourself to show how it can be done with simple computer vision methods. This implementation is far from beeing bullet-proof.
 
 *Limitations*: 
-- Computer vision: Do not correct the orientation.
+- Computer vision: Do not check nor correct the image orientation.
 - Decoding: The only implementation is QR Version 1 (21x21), byte-encoded 
+- Not dealing with error correction features
 
-## Load QR code
+## Part 1 - Image processing
+The first part is dedicated at reading the QR code from an image. The goal is to end up with a binary matrix that is the representation of the QR code image
+
+### Load QR code
 Load your QR code image, and import the required python modules.
 
 
@@ -36,18 +44,18 @@ plt.imshow(img)
 
 
 
-    <matplotlib.image.AxesImage at 0x2413d4e9fd0>
+    <matplotlib.image.AxesImage at 0x12137679af0>
 
 
 
 
     
-![png](/assets/images/posts/QR_decoder/output_2_1.png)
+![png](/assets/images/posts/DIY_QR_code_reader/output_2_1.png)
     
 
 
-## Preprocessing - Prepare the image
-As a pre-processing step, we only apply a threshold on the image so that we only have to deal with binary pixels, either fully white, or black.
+### Preprocessing - Prepare the image
+As a pre-processing step, we only apply a threshold on the image so that we only deal with binary pixels, either fully white, or black.
 
 In a real world use case, where the picture might comes from a smartphone camera, we would have to perform other and more complicated preprocessing of the image. Especially to deal with scale and orientation. [SIFT](https://opencv24-python-tutorials.readthedocs.io/en/latest/py_tutorials/py_feature2d/py_sift_intro/py_sift_intro.html) could be the way to deal with that.
 We don't want to add this complexity here.
@@ -59,11 +67,11 @@ _, gray = cv2.threshold(gray, 120, 255, cv2.THRESH_BINARY)
 #plt.imshow(gray, cmap='gray')
 ```
 
-## Processing - Find the bits
-This is the most important step, that is actually reading the QR code raw data.
+### Processing - Extract the bits
+Multiple steps are needed here to achieve this goal.
 
-### Countours
-Find the QR code features (3 corner)
+#### 3 corners
+Find the QR code features (ie the 3 corners)
 
 
 ```python
@@ -115,17 +123,18 @@ plt.imshow(img[ROI[1]:ROI[3], ROI[0]:ROI[2]])
 
 
 
-    <matplotlib.image.AxesImage at 0x2413f590b80>
+    <matplotlib.image.AxesImage at 0x12135e562b0>
 
 
 
 
     
-![png](/assets/images/posts/QR_decoder/output_7_1.png)
+![png](/assets/images/posts/DIY_QR_code_reader/output_7_1.png)
     
 
 
-### Build the grid
+#### Build the grid
+From the 3 corners, we can estimate the cell (=bit) size, and construct the grid for reading the individual bits
 
 
 ```python
@@ -134,7 +143,6 @@ plt.imshow(img[ROI[1]:ROI[3], ROI[0]:ROI[2]])
 cell_size = (np.mean(corners, axis=0)[2]-1) / 7
 nb_cell_x = round((ROI[2] - ROI[0]) / cell_size)
 nb_cell_y = round((ROI[3] - ROI[1]) / cell_size)
-print("Cell size: {}, nb cell: {}x{}".format(cell_size, nb_cell_x, nb_cell_y))
 assert nb_cell_x == nb_cell_y
 std_size = [21, 25, 29, 33, 37, 41, 45, 49, 53, 57, 61, 65, 69, 73, 77, 81, 85, 89, 93, 97, 101, 105]
 # find closest standard cell number
@@ -143,7 +151,7 @@ nb_cell = nb_cell_x
 # affine cell_size
 cell_size = (ROI[2] - ROI[0]) / nb_cell_x
 
-print("Cell size: {}, nb cell: {}x{}".format(cell_size, nb_cell, nb_cell))
+print("Cell size: {} px, nb cell: {}x{}".format(cell_size, nb_cell, nb_cell))
 
 #draw grid
 for i in range(nb_cell + 1):
@@ -155,24 +163,26 @@ for i in range(nb_cell + 1):
 plt.imshow(img[ROI[1]:ROI[3], ROI[0]:ROI[2]])
 ```
 
-    Cell size: 10.857142857142858, nb cell: 21x21
-    Cell size: 10.904761904761905, nb cell: 21x21
+    Cell size: 10.904761904761905 px, nb cell: 21x21
     
 
 
 
 
-    <matplotlib.image.AxesImage at 0x2413f91a430>
+    <matplotlib.image.AxesImage at 0x12138e4bc70>
 
 
 
 
     
-![png](/assets/images/posts/QR_decoder/output_9_2.png)
+![png](/assets/images/posts/DIY_QR_code_reader/output_9_2.png)
     
 
 
-### Extract the bits
+#### Extract the bits
+Now that we have the grid, we can simply use it the extract the bit value, black or white (1 or 0).
+To read the bit value, we average the pixels within the cell and apply a threshold.
+To be more reliable, we use a gaussian kernel to average the cell pixels, so that the middle pixel has more weight than the ones on the side. This helps if the grid is not precise.
 
 
 ```python
@@ -219,18 +229,27 @@ plt.imshow(1-raw_bit_matrix, cmap='gray') # 1-matrix to invert the color
 
 
 
-    <matplotlib.image.AxesImage at 0x2413f96e670>
+    <matplotlib.image.AxesImage at 0x121398e6160>
 
 
 
 
     
-![png](/assets/images/posts/QR_decoder/output_11_2.png)
+![png](/assets/images/posts/DIY_QR_code_reader/output_11_2.png)
     
 
 
-## Decode the bit Matrix
-Limitation: Only decode Version 1 (21x21), byte-encoded QR code. Bigger QR code, and not byte-encoded are not implemented. Error correction is not implemented either.
+## Part 2 - Decoding
+
+*Limitation*: Only decode Version 1 (21x21), byte-encoded QR code. Bigger QR code, and not byte-encoded are not implemented. Error correction is not implemented either.
+
+### Encoding and Masking
+The first thing to do is to read the QR format information, especially the mask number applied:
+
+![QR mask](/assets/images/posts/DIY_QR_code_reader/QR_mask.png)
+
+Once the mask is known, we need to apply the mask on the grid and invert the masked cell.
+We also check the encoding, by reading the 2x2 bottom right corner. This implementation is decoding only the byte encoding.
 
 
 ```python
@@ -330,11 +349,14 @@ assert np.array_equal(enc, np.array([[0, 0], [1, 0]]))
 
 
     
-![png](/assets/images/posts/QR_decoder/output_13_1.png)
+![png](/assets/images/posts/DIY_QR_code_reader/output_14_1.png)
     
 
 
-### Read the blocs
+### Read the data
+Finally, we can read the data, block by block, following this format:
+
+![QR placement](/assets/images/posts/DIY_QR_code_reader/QR_placement.png)
 
 
 ```python
@@ -379,23 +401,24 @@ d10_bloc = unmasked_matrix[nb_cell-6:nb_cell-2, nb_cell-8:nb_cell-4]
 # todo add next bloc
 
 data = [
-    chr(read_block_down_up(d1_bloc)),
-    chr(read_right_left_down(d2_bloc)),
-    chr(read_block_up_down(d3_bloc)),
-    chr(read_block_up_down(d4_bloc)),
-    chr(read_right_left_up(d5_bloc)),
-    chr(read_block_down_up(d6_bloc)),
-    chr(read_block_down_up(d7_bloc)),
-    chr(read_right_left_down(d8_bloc)),
-    chr(read_block_up_down(d9_bloc)),
-    chr(read_block_up_down(d10_bloc))
-]
+    chr(read_block_down_up(d1_bloc)), chr(read_right_left_down(d2_bloc)), chr(read_block_up_down(d3_bloc)),
+    chr(read_block_up_down(d4_bloc)), chr(read_right_left_up(d5_bloc)), chr(read_block_down_up(d6_bloc)),
+    chr(read_block_down_up(d7_bloc)), chr(read_right_left_down(d8_bloc)), chr(read_block_up_down(d9_bloc)),
+    chr(read_block_up_down(d10_bloc))]
 msg = ''
 for c in data:
     msg += c
-print("QR Code Message: {}".format(msg))
+print("QR Decoded Message: {}".format(msg))
 ```
 
     msg length: 10
-    QR Code Message: Congrats !
+    QR Decoded Message: Congrats !
     
+
+That's it ! We manage to decod "manually" this QR code. As said before, this code is just a demonstration on how it can be done with simple steps using python. It is not reliable and the implementation is not complete.
+
+Interesting things to try:
+- Pre-processing: deal with distorded images, align features
+- Decoding: Add more blocks, while taking into account the error level
+- Decoding: Include error detection and correction
+- Decoding: Deal with more encoding

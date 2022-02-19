@@ -4,8 +4,29 @@ layout: default
 
 <article class="post container" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
-    <p class="post-meta"><time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%b %-d, %Y" }}</time>{% if page.author %} &middot; <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ page.author }}</span></span>{% endif %}</p>
+    <p class="post-meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%b %-d, %Y" }}</time>
+      
+
+      {% if page.author %}
+        &middot; <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ page.author }}</span></span>
+      {% endif %}
+
+      {% if page.categories != empty %}
+      &middot; <span>Categories</span> 
+      {% for category in page.categories %}
+        <a href="{{site.baseurl}}/categories/#{{category|slugize}}">{{category}}</a>
+      {% endfor %}
+      {% endif %}
+
+      
+    </p>
     <h1 class="post-title" itemprop="name headline">{{ page.title }}</h1>
+
+    <div class="post-categories">
+      
+    </div>
+
   </header>
   <div class="post-content" itemprop="articleBody">
     {{ content }}

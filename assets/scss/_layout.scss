@@ -72,6 +72,7 @@ hr {
   border-bottom: 1px solid lighten($light-gray-color, 5%);
   margin-bottom: $small-spacing;
   min-height: 80px;
+  background-color: lighten($light-gray-color, 18%);
 }
 
 .intro {
@@ -95,7 +96,7 @@ hr {
   margin: 0 0 1em 0;
   cursor: pointer;
   letter-spacing: 0.8px;
-  font-size: 20px;
+  font-size: 25px;
   line-height: 28px;
   font-weight: 300;
 
@@ -135,8 +136,9 @@ hr {
 }
 
 .post-item {
-  margin-bottom: 0.2em;
+  margin-bottom: 0.4em;
   display: block;
+  // border: 1px dotted lighten($light-gray-color, 10%);
 
   a {
     color: $action-color;
@@ -145,15 +147,20 @@ hr {
   .article-title {
     display: inline-block;
     width: 85%;
-    //border-bottom: 1px dashed lighten($light-gray-color, 10%);
+    // border-bottom: 1px dashed lighten($light-gray-color, 10%);
   }
 
   .date-label {
-    //border: 1px solid lighten($light-gray-color, 10%);
+    // border: 1px solid lighten($light-gray-color, 10%);
     padding: 0 0.2em;
     margin-left: 1em;
     margin-top: 2px;
     @extend .pull-right;
+  }
+
+  p {
+    display: inline-block;
+    width: 85%;
   }
 
 }
@@ -189,6 +196,13 @@ hr {
     display: block;
     margin-left: auto;
     margin-right: auto;
+  }
+}
+
+.icon-header {
+  img {
+    float: left;
+    height: 30px;
   }
 }
 
