@@ -5,6 +5,8 @@ comments: true
 description: "Walkthrough in making a python code to read and decode a QR code"
 categories: Python
 tags: "Python QR-code Computer-vision openCV"
+cover_img: true
+cover_img_url: "/assets/images/posts/DIY_QR_code_reader/cover.png"
 ---
 
 # DIY QR Decoder in Python using basic computer vision (openCV)

@@ -5,6 +5,8 @@ comments: true
 description: "Transform a picture to correct the perspective using python and openCV"
 categories: Python
 tags: "Python QR-code Computer-vision openCV"
+cover_img: true
+cover_img_url: "/assets/images/posts/perspective_correction/cover.png"
 ---
 
 # Perspective correction with Python (openCV)

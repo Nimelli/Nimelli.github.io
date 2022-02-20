@@ -2,7 +2,7 @@
 title_left    : "Coffee"
 title_right   : "TechBlog"
 title         : "CoffeeTechBlog"
-description   : "Interesting blog posts arouns technologies, engineering, programming"
+description   : "Interesting blog posts around technologies, engineering, programming"
 keywords      : "coffeetech, tech, blog, science"
 repo          : "Nimelli/Nimelli.github.io"
 url           : https://nimelli.github.io/ # site url

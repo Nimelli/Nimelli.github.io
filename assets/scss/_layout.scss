@@ -180,6 +180,12 @@ hr {
   color: $dark-gray-color;
 }
 
+.post-cover {
+  img {
+    width: 100%;
+  }
+}
+
 .post-link,
 .post a,
 .page a {

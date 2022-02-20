@@ -15,7 +15,7 @@ layout: default
       {% if page.categories != empty %}
       &middot; <span>Categories</span> 
       {% for category in page.categories %}
-        <a href="{{site.baseurl}}/categories">{{category}}</a>
+        <a href="{{ "/categories" | prepend:site.baseurl | prepend: site.url }}">{{category}}</a>
       {% endfor %}
       {% endif %}
 
@@ -26,6 +26,12 @@ layout: default
     <div class="post-categories">
       
     </div>
+
+    {% if page.cover_img %}
+    <div class="post-cover">
+      <img src="{{ page.cover_img_url | prepend: site.baseurl | prepend: site.url }}" alt="cover">
+    </div>
+    {% endif %}
 
   </header>
   <div class="post-content" itemprop="articleBody">
