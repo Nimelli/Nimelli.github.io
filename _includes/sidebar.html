@@ -1,0 +1,14 @@
+<div class="sidebar">
+
+    <div class="center">
+        <h4><a href="{{ "/" | prepend:site.baseurl | prepend: site.url }}">Home </a></h4>
+    </div>
+    <h5>Categories:</h5>
+    {% for category in site.categories %}
+    <div class="archive-group">
+        {% capture category_name %}{{ category | first }}{% endcapture %}
+        <div class="article-title"><h5> <a href="{{ "/categories" | prepend:site.baseurl | prepend: site.url }}">{{category_name}} </a> </h5></div>
+    </div>
+    {% endfor %}
+    
+</div>
