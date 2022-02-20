@@ -7,7 +7,7 @@
     {% for category in site.categories %}
     <div class="archive-group">
         {% capture category_name %}{{ category | first }}{% endcapture %}
-        <div class="article-title"><h5> <a href="{{ "/categories" | prepend:site.baseurl | prepend: site.url }}">{{category_name}} </a> </h5></div>
+        <div class="article-title"> <a href="{{ "/categories" | prepend:site.baseurl | prepend: site.url }}">{{category_name}} </a> </div>
     </div>
     {% endfor %}
     

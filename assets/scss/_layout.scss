@@ -40,9 +40,10 @@ hr {
 
 .container {
   padding: $base-spacing;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 800px;
+  //margin-left: auto;
+  //margin-right: auto;
+  margin-left: 15px;
+  max-width: 980px;
   font-weight: normal;
 }
 
@@ -198,6 +199,7 @@ hr {
 .post-link,
 .post a,
 .page a {
+  font-weight: bold;
   @extend .link;
 }
 
