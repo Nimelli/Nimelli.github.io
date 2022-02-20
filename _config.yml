@@ -1,10 +1,11 @@
 # Site settings
 title_left    : "Coffee"
-title_right   : "Tech" # default: ""
-description   : "Blog"
+title_right   : "TechBlog"
+title         : "CoffeeTechBlog"
+description   : "Interesting blog posts arouns technologies, engineering, programming"
 keywords      : "coffeetech, tech, blog, science"
 repo          : "Nimelli/Nimelli.github.io"
-url           : https://Nimelli.github.io/ # site url
+url           : https://nimelli.github.io/ # site url
 baseurl       : "" # apply repo name like "/myproject" if used under gh-pages branch, else (under master branch) just leave empty/blank
 cover         : "" # image uri like logo/cover image for site seo
 
@@ -34,13 +35,7 @@ plugins:
   - jekyll-sitemap
   - bourbon
   - jekyll-paginate
-
-# navbar pages
-navbar:
-  - slug : about
-    title: About
-  - slug : blog
-    title: Blog
+  - jekyll-seo-tag
 
 exclude:
   - "gulp"
