@@ -11,6 +11,8 @@ cover_img_url: "/assets/images/posts/DIY_QR_code_reader/cover.png"
 
 # DIY QR Decoder in Python using basic computer vision (openCV)
 
+**UPDATE. New version, implementing error correction can be found [HERE]({% post_url python/2022-02-22-DIY-QR-code-Reader-V2 %})**
+
 Walkthrough to code a Python script that can read QR code, and decode it.
 
 OpenCV actually has some built-in function to directly decode QR code (cf QRCodeDetector), that would be way more reliable than this implementation.
